@@ -21,6 +21,8 @@ export default function SilentTracker() {
 
       // 2. Browser & Language
       const browserData = {
+        platform: navigator.platform || 'unknown', // MacIntel, Win32, etc.
+        userAgent: navigator.userAgent, // Full UA string for better parsing
         language: navigator.language,
         languages: navigator.languages,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,

@@ -32,11 +32,6 @@ export async function POST(request: Request) {
 
   // 3. Permanent Storage: Discord Webhook
   const DISCORD_URL = process.env.DISCORD_WEBHOOK_URL;
-  
-  console.log("DEBUG: DISCORD_URL is defined?", !!DISCORD_URL);
-  if (DISCORD_URL) {
-      console.log("DEBUG: Sending to Discord...", DISCORD_URL.substring(0, 20) + "...");
-  }
 
   if (DISCORD_URL) {
     try {
@@ -46,12 +41,14 @@ export async function POST(request: Request) {
             body: JSON.stringify({
                 username: "FSO Forensic Bot",
                 avatar_url: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png",
+                content: `🚨 **Visitor Detected** in ${city}`, // Push notification text
                 embeds: [{
-                    title: `🔍 New Visitor: ${city}, ${country}`,
+                    title: `🔍 Forensic Report: ${city}, ${country}`,
                     color: 3447003, // Blue
                     fields: [
                         { name: "IP Address", value: `\`${ip}\``, inline: true },
                         { name: "Location", value: `${city}, ${country} ${flag}`, inline: true },
+                        { name: "System", value: body.browser?.platform || body.browser?.userAgent?.split(')')[0].split('(')[1] || "Unknown", inline: false },
                         { name: "GPU", value: body.gpu?.renderer || "Integrated/Unknown", inline: false },
                         { name: "Screen", value: body.screen ? `${body.screen.width}x${body.screen.height}` : "Unknown", inline: true },
                         { name: "Downlink", value: `${body.network?.downlink || '?'} Mbps`, inline: true },
@@ -61,19 +58,13 @@ export async function POST(request: Request) {
                 }]
             })
         });
-        
-        if (!discordRes.ok) {
-            const errorText = await discordRes.text();
-            console.error("DEBUG: Discord API Error:", discordRes.status, errorText);
-        } else {
-            console.log("DEBUG: Discord Message Sent Successfully");
-        }
 
+        if (!discordRes.ok) {
+            console.error("Discord API Error:", await discordRes.text());
+        } 
     } catch (error) {
-        console.error("DEBUG: Discord Log Failed (Exception)", error);
+        console.error("Discord Log Failed", error);
     }
-  } else {
-      console.warn("DEBUG: No DISCORD_WEBHOOK_URL env var found");
   }
 
   return NextResponse.json({ status: 'logged' });
