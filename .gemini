@@ -1,0 +1,54 @@
+# Project Context: Evaluation of Adaptive Optics in FSO Communication
+
+## Overview
+**Title:** Evaluation of Adaptive Optics for Correcting Atmospheric Distortions in Free-Space Optical Communication
+**Author:** Dongbeom Son
+**Date:** January 22, 2025 (Experiment: Oct 2024 - Dec 2024)
+
+## Abstract
+This project evaluates the effectiveness of a closed-loop Adaptive Optics (AO) system in mitigating atmospheric wavefront distortions for Free-Space Optical (FSO) communication. Using a heating wire to simulate turbulence, the study compares signal intensity and Signal-to-Noise Ratio (SNR) with and without AO correction.
+
+## Key Findings
+- **Effective Range:** AO improves SNR significantly within a "moderate turbulence" range defined by heat transfer ($Q$) between **136 ± 10 J** and **450 ± 70 J**.
+- **Failing Point:** Beyond **450 ± 70 J**, the AO system fails to improve SNR, and may degrade it, due to hardware limitations (DM actuator stroke limit of 13.6 µm) and processing latency.
+- **Low Turbulence:** Below **136 J**, AO may introduce minor distortions due to non-flat DM surface.
+- **Signal Intensity:** AO correction consistently yields higher total signal intensity within the Region of Interest (RoI) across most turbulence levels.
+
+## Experimental Setup
+- **Components:**
+    - Laser (600 nm)
+    - Heating Wire (Simulated turbulence, $3.1 Ω$, $0.9 A$ DC)
+    - Deformable Mirror (DM) (Thorlabs AO Kit)
+    - Wavefront Sensor (WFS)
+    - CCD Camera (Frame rate: ~34.815 fps)
+    - 4f Relay systems for optical alignment
+- **Turbulence Proxy:** Heat transferred to air $\Delta Q = P \Delta t = I^2 R \Delta t$.
+
+## Data Analysis Parameters
+The intensity distribution was fitted to a 2D Gaussian function:
+$G(x, y) = \text{offset} + A \exp⁰-⁰\left(-\left[a(x-x_0)^2 + 2b(x-x_0)(y-y_0) + c(y-y_0)^2\right]\right)$
+
+### Optimised Parameters (Reference Video)
+**Without AO:**
+- Amplitude: 7152.0083
+- Center $(x_0, y_0)$: (764.776, 614.056)
+- Spread $(\sigma_x, \sigma_y)$: (2.6383, 7.1786)
+
+**With AO:**
+- Amplitude: 52897.4846 (Significantly higher peak)
+- Center $(x_0, y_0)$: (803.520, 718.401)
+- Spread $(\sigma_x, \sigma_y)$: (2.2418, 1.9498) (Tighter focus)
+
+## Result Files Map
+| File Name | Description | Report Figure |
+|-----------|-------------|---------------|
+| `Configuration.jpg` | Experimental setup / Software interface | Fig 3 / 4 |
+| `without_AO_Summed_Intensity.png` | Summed intensity (No AO) | Fig 6 |
+| `without_AO_Gaussian_Fit.png` | 2D Gaussian Fit (No AO) | Fig 7 |
+| `with_AO_Summed_Intensity.png` | Summed intensity (With AO) | Fig 8 |
+| `with_AO_Gaussian_Fit.png` | 2D Gaussian Fit (With AO) | Fig 9 |
+| `Total Intensity within the Region of Interest over Q.png` | Signal vs. Heat | Fig 10 |
+| `Signal Improvement [%] in Signal over Q.png` | Signal % Improvement | Fig 11 |
+| `Signal-to-Noise Ratio within the Region of Interest over Q.png` | SNR vs. Heat | Fig 12 |
+| `SNR_Percentage.png` | SNR % Improvement (Green/Red regions) | Fig 13 |
+| `Q_intersections.pdf` | Analysis of intersection points | Eq 16 |
